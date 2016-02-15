@@ -1,19 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class RoomGenerate : MonoBehaviour {
+public class RoomGenerate  {
     public GameObject basicTile;
     public GameObject plane;
-   
-    int[,] roomMaxtrix =new int[10, 10];
+	int[,] roomPosition;   
+	int[,] roomMaxtrix;
+	//0 = left
+	//1 = top
+	//2= right
+	//3= bottom
+	int[] connectionsToRooms;
     // Use this for initialization
-    void Start () {
-    
-    }
-	
-	// Update is called once per frame
-	void Update () {
-	
+   	 RoomGenerate(int[,]position, int[]connections)
+	{
+		roomMaxtrix =new int[10, 10];
+		roomPosition = position;
+		connectionsToRooms = connections;
 	}
     public void Generate()
     {
