@@ -1,23 +1,28 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class RoomGenerate  {
+public class RoomGenerate:MonoBehaviour  {
     public GameObject basicTile;
     public GameObject plane;
-	int[,] roomPosition;   
+	int[] roomPosition= new int[2];   
 	int[,] roomMaxtrix;
+	///connections
 	//0 = left
 	//1 = top
 	//2= right
 	//3= bottom
-	int[] connectionsToRooms;
+	public int[] connectionsToRooms;
     // Use this for initialization
-   	 RoomGenerate(int[,]position, int[]connections)
+   	public RoomGenerate(int[]position, int[]connections)
 	{
 		roomMaxtrix =new int[10, 10];
 		roomPosition = position;
 		connectionsToRooms = connections;
+		GameObject cube = GameObject.CreatePrimitive (PrimitiveType.Cube);
+
+		cube.transform.position= new Vector3(position[0]*10,position[1]*10, 0);
 	}
+
     public void Generate()
     {
         Instantiate(plane, new Vector3(0, 0, 0), Quaternion.identity);
