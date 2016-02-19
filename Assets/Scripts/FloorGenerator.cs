@@ -4,8 +4,9 @@ using System.Collections;
 public class FloorGenerator : MonoBehaviour {
 
     public GameObject plane;
-	RoomGenerate[,] layout = new RoomGenerate[11,11];
-	int[] position = new int[2] {6,6};
+    Room[,] layout = new Room[11,11];
+	public int[] position = new int[2] {6,6};
+	public int[] touching = new int[4];
 	//spritesheet tileSprites
     // Use this for initialization
     void Start () {
@@ -25,38 +26,45 @@ public class FloorGenerator : MonoBehaviour {
     //Generate a floor with that tileset
 
 	}
-	void GenerateFloor(){
+	int[] addRoom(int[] pos)
+	{
 		// Choose a tile set
 		
 		//Generate a floor with that tileset
 		//Generate a layout plan
 		// start at [6,6] which is the center of the "map"
-		int[] touching = new int[4];
-		//decide if anything is around it
-		double touchChance = 0.33;
+
+		int touchChance = 30;
 		//do until there is at least one adjacent room
-		while (touching[0]!= 1 || touching[1]!= 1 || touching[2]!= 1 || touching[3]!= 1) {
+		bool empty = false;
+		while (empty!=true) {
 			for (int i = 0; i < 4; i++) {
-				if (touchChance >= Random.Range(0.0f,1.0f) ) {
+				if (touchChance >= Random.Range (0.0f, 1.0f) * 100) {
 					touching [i] = 1;
+					empty = true;
 				} else {
 					touching [i] = 0;
 				}
 			}
 		}
 		
-		layout[position[0],position[1]] = new RoomGenerate (position,touching);
+		layout[position[0],position[1]] = new Room (position,touching);
+		return touching;
 
+	}
+	void GenerateFloor(){
+
+		int[] touching = addRoom (position);
 		
 		//Generate the next room by iterating through the touching of the last room 
 		//check all of the array for touching
 		///connections
-		int[] untouchedPos = position;
+		//int[] untouchedPos = position;
 		//0 = left
 		if (touching [0] == 1) 
 		{
 			//guarentee position
-			position=untouchedPos;
+			//position=untouchedPos;
 			//check to see if position to the left is a wall
 			if(position[0]-1 <0)
 			{
@@ -69,7 +77,8 @@ public class FloorGenerator : MonoBehaviour {
 				}
 				else
 				{
-					GenerateFloor();
+					position[0] --;
+					touching = addRoom (position);
 				}
 			}
 		}
@@ -77,9 +86,9 @@ public class FloorGenerator : MonoBehaviour {
 		if (touching [1] == 1)
 		{
 			//guarentee position
-			position=untouchedPos;
+			//position=untouchedPos;
 			//check to see if position to the left is a wall
-			if(position[1]+1 <10)
+			if(position[1]+1 <11)
 			{
 			}
 			else
@@ -90,17 +99,20 @@ public class FloorGenerator : MonoBehaviour {
 				}
 				else
 				{
-					GenerateFloor();
+					position[1] ++;
+					touching = addRoom (position);
 				}
 			}
 		}
 		//2= right
 		if (touching [2] == 1) 
 		{
+			position[0] ++;
+			touching = addRoom (position);
 			//guarentee position
-			position=untouchedPos;
+			//position=untouchedPos;
 			//check to see if position to the left is a wall
-			if(position[0]+1 <0)
+			if(position[0]+1 <11)
 			{
 			}
 			else
@@ -111,7 +123,8 @@ public class FloorGenerator : MonoBehaviour {
 				}
 				else
 				{
-					GenerateFloor();
+					position[0] ++;
+					touching = addRoom (position);
 				}
 			}
 		}
@@ -119,7 +132,7 @@ public class FloorGenerator : MonoBehaviour {
 		if (touching [3] == 1) 
 		{
 			//guarentee position
-			position=untouchedPos;
+			//position=untouchedPos;
 			//check to see if position to the left is a wall
 			if(position[1]-1 <0)
 			{
@@ -132,7 +145,8 @@ public class FloorGenerator : MonoBehaviour {
 				}
 				else
 				{
-					GenerateFloor();
+					position[1] --;
+					touching = addRoom (position);
 				}
 			}
 		}
