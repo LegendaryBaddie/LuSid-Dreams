@@ -11,7 +11,10 @@ public class RoomGenerate:MonoBehaviour  {
 		
 		cube.transform.position= new Vector3(position[0],position[1]);
 	}
+	public void displayRoom(Room room)
+	{
 
+	}
     public void Generate(int[,] roomMatrix)
     {
         Instantiate(plane, new Vector3(0, 0, 0), Quaternion.identity);

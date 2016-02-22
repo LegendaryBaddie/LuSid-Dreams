@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Room {
 
-
+	public bool active=false;
 	int[] roomPosition= new int[2];   
 	int[,] roomMatrix;
 	///connections
@@ -19,7 +19,7 @@ public class Room {
 		roomPosition = position;
 		connectionsToRooms = connections;
 		GameObject.Find("FloorManager").GetComponent<RoomGenerate>().test (position);
-		Debug.Log (position);
+
 	}
 
 
