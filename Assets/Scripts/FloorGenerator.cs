@@ -15,8 +15,10 @@ public class FloorGenerator : MonoBehaviour {
 				layout[i,k] = null;
 			}
 		}
+		//generate floor
 		GenerateFloor();
 		// generate each room on floor;
+		gameObject.GetComponent<RoomGenerate> ().displayRoom (layout [6, 6]);
     }
 	
 	// Update is called once per frame
@@ -49,6 +51,7 @@ public class FloorGenerator : MonoBehaviour {
 		}
 		
 		layout[position[0],position[1]] = new Room (position,touching);
+		layout [position [0], position [1]].Generate ();
 		return touching;
 
 	}
