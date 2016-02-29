@@ -1,25 +1,25 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class RoomGenerate : MonoBehaviour {
-    public GameObject basicTile;
-    public GameObject plane;
-   
-    int[,] roomMaxtrix =new int[10, 10];
-    // Use this for initialization
-    void Start () {
+public class RoomGenerate:MonoBehaviour  {
     
-    }
-	
-	// Update is called once per frame
-	void Update () {
-	
+	public GameObject basicTile;
+	public GameObject plane;
+   	public void test(int[] position)
+	{
+		GameObject cube = GameObject.CreatePrimitive (PrimitiveType.Cube);
+		
+		cube.transform.position= new Vector3(position[0],position[1]);
 	}
-    public void Generate()
+	public void displayRoom(Room room)
+	{
+
+	}
+    public void Generate(int[,] roomMatrix)
     {
         Instantiate(plane, new Vector3(0, 0, 0), Quaternion.identity);
-        int xArray = roomMaxtrix.GetLength(0);
-        int yArray = roomMaxtrix.GetLength(1);
+        int xArray = roomMatrix.GetLength(0);
+        int yArray = roomMatrix.GetLength(1);
 
         for (int i = 0; i < xArray; i++)
         {
