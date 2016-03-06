@@ -74,7 +74,7 @@ public class FloorGenerator : MonoBehaviour {
 					}
 					else
 					{
-						Debug.Log("left not a wall");
+						
 						// check if position to the left is occupied
 						if(layout[untouchedPos[0]-1,untouchedPos[1]]!=null)
 						{
@@ -91,12 +91,12 @@ public class FloorGenerator : MonoBehaviour {
 			if(i==1&& touching[i] ==1)
 			{
 				position= untouchedPos;
-				if(untouchedPos[1]+1 >11)
+				if(untouchedPos[1]+1 >10)
 				{
 				}
 				else
 				{
-					Debug.Log("top not a wall");
+
 					// check if position to the left is occupied
 					if(layout[untouchedPos[0],untouchedPos[1]+1]!=null)
 					{
@@ -112,12 +112,12 @@ public class FloorGenerator : MonoBehaviour {
 			if(i==2&& touching[i] ==1)
 			{
 				position= untouchedPos;
-				if(untouchedPos[0]+1 >11)
+				if(untouchedPos[0]+1 >10)
 				{
 				}
 				else
 				{
-					Debug.Log("right not a wall");
+
 					// check if position to the left is occupied
 					if(layout[untouchedPos[0]+1,untouchedPos[1]]!=null)
 					{
@@ -137,7 +137,7 @@ public class FloorGenerator : MonoBehaviour {
 				}
 				else
 				{
-					Debug.Log("bottom not a wall");
+
 					// check if position to the left is occupied
 					if(layout[untouchedPos[0],untouchedPos[1]-1]!=null)
 					{

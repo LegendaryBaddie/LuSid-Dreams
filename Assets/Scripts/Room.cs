@@ -55,11 +55,30 @@ public class Room {
 				}
 				else
 				{
-				roomMatrix[i,m] = Random.Range(0,tileCount-1);
+					//if a wall
+					if(i==0||i==10||m==10||m==0)
+					{
+						//add door right
+						roomMatrix[i,m] = 6;
+					}
+					else // actually do room generation
+					{
+
+						Debug.Log("I:"+i+"m:"+m+"chance:"+rockChance(i,m));
+						roomMatrix[i,m] = Random.Range(0,tileCount-1);
+					}
 				}
 			}
 		}
 		
+	}
+	float rockChance(int itterationX, int itterationY)
+	{
+		float chance = itterationX + itterationY;
+		chance /= 2;
+		chance = 5 - chance;
+		chance = chance / 121;
+		return chance;
 	}
 
 }

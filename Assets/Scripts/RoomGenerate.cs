@@ -8,7 +8,8 @@ public class RoomGenerate:MonoBehaviour  {
 	public GameObject lDoor;
 	public GameObject rDoor;
 	public GameObject bDoor;
-	GameObject[] tiles = new GameObject[6];
+	public GameObject wall;
+	GameObject[] tiles = new GameObject[7];
 	public GameObject plane;
 	void Start()
 	{
@@ -18,6 +19,7 @@ public class RoomGenerate:MonoBehaviour  {
 		tiles [3] = lDoor;
 		tiles [4] = rDoor;
 		tiles [5] = bDoor;
+		tiles [6] = wall;
 	}
    	public void test(int[] position)
 	{
