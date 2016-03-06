@@ -64,7 +64,7 @@ public class Room {
 					else // actually do room generation
 					{
 
-						Debug.Log("I:"+i+"m:"+m+"chance:"+rockChance(i,m));
+						//Debug.Log("I:"+i+"m:"+m+"chance:"+rockChance(i,m));
 						roomMatrix[i,m] = Random.Range(0,tileCount-1);
 					}
 				}

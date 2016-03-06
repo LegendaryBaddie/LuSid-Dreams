@@ -4,6 +4,7 @@ using System.Collections;
 public class FloorGenerator : MonoBehaviour {
 
     public GameObject plane;
+	public GameObject player;
     Room[,] layout = new Room[11,11];
 	public int[] position = new int[2] {6,6};
 	//spritesheet tileSprites
@@ -19,6 +20,8 @@ public class FloorGenerator : MonoBehaviour {
 		GenerateFloor();
 		// generate each room on floor;
 		gameObject.GetComponent<RoomGenerate> ().displayRoom (layout [6, 6]);
+	
+
     }
 	
 	// Update is called once per frame
