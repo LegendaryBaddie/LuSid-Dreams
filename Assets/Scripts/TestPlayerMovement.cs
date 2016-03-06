@@ -30,4 +30,30 @@ public class TestPlayerMovement : MonoBehaviour {
 		}
 	
 	}
+
+	void OnTriggerEnter2D(Collider2D obj){
+		if (obj.tag=="TDoor")
+		{
+			Debug.Log("sdfgdsds");
+			GameObject.Find("FloorManager").GetComponent<FloorGenerator>().changeRoom(1);
+		}
+		else if (obj.tag=="RDoor")
+		{
+			Debug.Log("sdfgdsds");
+			GameObject.Find("FloorManager").GetComponent<FloorGenerator>().changeRoom(0);
+		}
+		else if (obj.tag=="LDoor")
+		{
+			Debug.Log("sdfgdsds");
+			GameObject.Find("FloorManager").GetComponent<FloorGenerator>().changeRoom(2);
+		}
+		else if (obj.tag=="BDoor")
+		{
+			Debug.Log("sdfgdsds");
+			GameObject.Find("FloorManager").GetComponent<FloorGenerator>().changeRoom(3);
+		}
+
+	}
+
+
 }

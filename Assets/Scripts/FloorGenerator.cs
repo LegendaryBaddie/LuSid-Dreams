@@ -3,7 +3,7 @@ using System.Collections;
 
 public class FloorGenerator : MonoBehaviour {
 
-    public GameObject plane;
+   
 	public GameObject player;
     Room[,] layout = new Room[11,11];
 	public int[] position = new int[2] {6,6};
@@ -19,6 +19,8 @@ public class FloorGenerator : MonoBehaviour {
 		//generate floor
 		GenerateFloor();
 		// generate each room on floor;
+		position [0] = 6;
+		position [1] = 6;
 		gameObject.GetComponent<RoomGenerate> ().displayRoom (layout [6, 6]);
 	
 
@@ -54,8 +56,38 @@ public class FloorGenerator : MonoBehaviour {
 		}
 		
 		layout[position[0],position[1]] = new Room (position,touching);
-		layout [position [0], position [1]].Generate ();
+		layout[position [0], position [1]].Generate ();
 		return touching;
+
+	}
+	public void changeRoom(int direction){
+
+		//left
+		if (direction == 0) {
+			position[0]-=1;
+			player.transform.position = new Vector3(8.5f,5,0)  ;
+		}
+		//top
+		else if (direction == 1) {
+			position[1]+=1;
+			player.transform.position = new Vector3(5,1.5f,0)  ;
+		}
+		//right
+		else if (direction == 2) {
+			position[0]+=1;
+			player.transform.position = new Vector3(1.5f,5,0)  ;
+		}
+		//bottom
+		else if (direction == 3) {
+			position[1]-=1;
+			player.transform.position = new Vector3(5,8.5f,0)  ;
+		}
+		foreach (Transform child in GameObject.Find("Plane(Clone)").transform)
+		{
+			GameObject.Destroy(child.gameObject);
+		}
+
+		gameObject.GetComponent<RoomGenerate> ().displayRoom (layout [position[0], position[1]]);
 
 	}
 	void GenerateFloor(){

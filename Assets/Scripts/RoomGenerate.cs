@@ -20,6 +20,7 @@ public class RoomGenerate:MonoBehaviour  {
 		tiles [4] = rDoor;
 		tiles [5] = bDoor;
 		tiles [6] = wall;
+		Instantiate(plane, new Vector3(0, 0, 0), Quaternion.identity);
 	}
    	public void test(int[] position)
 	{
@@ -29,9 +30,9 @@ public class RoomGenerate:MonoBehaviour  {
 	}
 	public void displayRoom(Room room)
 	{
-		Instantiate(plane, new Vector3(0, 0, 0), Quaternion.identity);
 
-		
+
+
 		for (int i = 0; i < 11; i++)
 		{
 			for (int m = 0; m < 11; m++)
