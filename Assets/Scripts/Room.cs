@@ -7,6 +7,7 @@ public class Room {
 	const int tileCount = 2;
 	int[] roomPosition= new int[2];   
 	public int[,] roomMatrix;
+
 	///connections
 	//0 = left
 	//1 = top
@@ -19,7 +20,9 @@ public class Room {
 		roomMatrix =new int[11, 11];
 		roomPosition = position;
 		connectionsToRooms = connections;
-		//GameObject.Find("FloorManager").GetComponent<RoomGenerate>().test (position);
+
+	
+		GameObject.Find("FloorManager").GetComponent<RoomGenerate>().test (position);
 
 	}
 	public void Generate()
