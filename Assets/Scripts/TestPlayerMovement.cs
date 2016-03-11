@@ -4,10 +4,21 @@ using System.Collections;
 public class TestPlayerMovement : MonoBehaviour {
 
 	public float speed = 1.5f;
+	public GameObject enemyPrefab;
+	public int numOfEnemies;
+	int randNum;
 
 	// Use this for initialization
 	void Start () {
-			
+
+		for (int i = 1; i < numOfEnemies + 1; i++) {
+			//Get random coordinates
+			randNum = Random.Range(1,10);
+
+			//Instantiate enemy on start
+			Instantiate (enemyPrefab, new Vector3 (randNum, randNum, 0), Quaternion.identity);
+		}
+
 	}
 	
 	// Update is called once per frame

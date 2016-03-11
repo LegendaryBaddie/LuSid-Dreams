@@ -3,7 +3,7 @@ using System.Collections;
 
 public class EnemyMovement : MonoBehaviour {
 
-	public GameObject player;
+	GameObject player;
 	public float speed;
 	bool hasEntered;
 
@@ -15,15 +15,14 @@ public class EnemyMovement : MonoBehaviour {
 	Vector3 wayPoint;
 	float step;
 
-	Vector2 playerVec;
-
 	// Use this for initialization
 	void Start () {
 		speed = 1;
 		hasEntered = false;
 		wander ();
 		step = speed * Time.deltaTime;
-
+		player = GameObject.FindGameObjectWithTag("Player");
+		
 	}
 	
 	// Update is called once per frame
@@ -45,6 +44,7 @@ public class EnemyMovement : MonoBehaviour {
 	void OnTriggerEnter(Collider other) {
 		if (other.gameObject.tag == "Player") {
 			hasEntered = true;
+
 		} 
 
 	}
@@ -65,7 +65,7 @@ public class EnemyMovement : MonoBehaviour {
 			Vector2 randomCirclePoint = Random.insideUnitCircle * wanderRadius;
 			destination = new Vector3 (randomCirclePoint.x, randomCirclePoint.y, 0);
 
-			playerVec = new Vector2(transform.position.x, transform.position.y);
+			// = new Vector2(transform.position.x, transform.position.y);
 
 		}
 		/*transform.position = Vector3.MoveTowards (transform.position, destination, step * 0.5f);
@@ -83,17 +83,26 @@ public class EnemyMovement : MonoBehaviour {
 
 	//Function that seeks the player
 	void seek(){
+		//Seek Player
 		transform.position = Vector3.MoveTowards (transform.position, player.transform.position, step);
-		
+		print("entered");
+		//Rotate Towards Player
+		/*Vector3 playerDir = player.transform.position - transform.position;
+		Vector3 newDir = Vector3.RotateTowards(transform.forward, playerDir, step, 0.0F);
+		transform.rotation = Quaternion.LookRotation(newDir);*/
+
+		//Check if enemy is within range to attack player
 		float playerX = player.transform.position.x;
 		float playerY = player.transform.position.y;
 		float enemyX = transform.position.x;
 		float enemyY = transform.position.y;
 		
-		if(Mathf.Abs(enemyX - playerX) > 2.5){
+		if(Mathf.Abs(enemyX - playerX) > 0.5){
+			print("left");
 			hasEntered = false;
 		}
-		if(Mathf.Abs(enemyY - playerY) > 2.5){
+		if(Mathf.Abs(enemyY - playerY) > 0.5){
+			print("left");
 			hasEntered = false;
 		}
 	}
