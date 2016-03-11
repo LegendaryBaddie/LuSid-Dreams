@@ -5,7 +5,7 @@ public class FloorGenerator : MonoBehaviour {
 
    
 	public GameObject player;
-    Room[,] layout = new Room[11,11];
+    public Room[,] layout = new Room[11,11];
 	public int[] position = new int[2] {6,6};
 	//spritesheet tileSprites
     // Use this for initialization
@@ -21,8 +21,8 @@ public class FloorGenerator : MonoBehaviour {
 		// generate each room on floor;
 		position [0] = 6;
 		position [1] = 6;
-		gameObject.GetComponent<RoomGenerate> ().displayRoom (layout [6, 6]);
-	
+		gameObject.GetComponent<RoomGenerate> ().displayRoom (layout [6, 6],layout);
+
 
     }
 	
@@ -87,7 +87,7 @@ public class FloorGenerator : MonoBehaviour {
 			GameObject.Destroy(child.gameObject);
 		}
 
-		gameObject.GetComponent<RoomGenerate> ().displayRoom (layout [position[0], position[1]]);
+		gameObject.GetComponent<RoomGenerate> ().displayRoom (layout [position[0], position[1]],layout);
 
 	}
 	void GenerateFloor(){

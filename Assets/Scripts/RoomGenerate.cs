@@ -8,9 +8,12 @@ public class RoomGenerate:MonoBehaviour  {
 	public GameObject lDoor;
 	public GameObject rDoor;
 	public GameObject bDoor;
+	pu
 	public GameObject wall;
+	public Material mat;
 	GameObject[] tiles = new GameObject[7];
 	public GameObject plane;
+	GameObject map;
 	void Start()
 	{
 		tiles [0] = basicTile;
@@ -22,15 +25,24 @@ public class RoomGenerate:MonoBehaviour  {
 		tiles [6] = wall;
 		Instantiate(plane, new Vector3(0, 0, 0), Quaternion.identity);
 	}
-   	public void test(int[] position)
+   	public void miniMapDisplay(int[] position)
 	{
 		GameObject cube = GameObject.CreatePrimitive (PrimitiveType.Cube);
-		
-		cube.transform.position= new Vector3(position[0],position[1]);
-	}
-	public void displayRoom(Room room)
-	{
+		if (position [0] == 6 && position [1] == 6) 
+		{
+			map = GameObject.CreatePrimitive (PrimitiveType.Cube);
+			
+			map.transform.position= new Vector3(14f,7f,1.0f);
+			map.transform.localScale = new Vector3 (3f,3f, 0);
+			map.GetComponent<MeshRenderer>().material = mat;
+		}
 
+		cube.transform.parent = map.transform;
+		cube.transform.position= new Vector3(13+position[0]*0.25f,5+position[1]*0.25f,0);
+		cube.transform.localScale = new Vector3 (0.05f, 0.05f, 0);
+	}
+	public void displayRoom(Room room, Room[,] layout)
+	{
 
 
 		for (int i = 0; i < 11; i++)
@@ -42,6 +54,12 @@ public class RoomGenerate:MonoBehaviour  {
 				tile.transform.parent = GameObject.Find("Plane(Clone)").transform;
 				// 0,0 is bottome left hand corner.
 				tile.name = "Tile Column:" + i + "Row:" + m;
+
+				//mini map
+				if(layout[i,m] != null)
+				{
+				miniMapDisplay (layout[i,m].roomPosition);
+				}
 			}
 		}
 
