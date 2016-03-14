@@ -3,19 +3,20 @@ using System.Collections;
 
 public class EnemyMovement : MonoBehaviour {
 
-	public GameObject player;
+	GameObject player;
 	public float speed;
 	bool hasEntered;
 
-
+	//For wander
 	float wanderRadius = 5.0f;
 	Vector3 destination = Vector3.zero;
-	Vector3 newDir;
+	Vector2 randomCirclePoint;
+	public float rotationSpeed;
+	private Quaternion lookRotation;
+	private Vector3 direction;
+	bool changeDirection;
 
-	Vector3 wayPoint;
 	float step;
-
-	Vector2 playerVec;
 
 	// Use this for initialization
 	void Start () {
@@ -23,15 +24,18 @@ public class EnemyMovement : MonoBehaviour {
 		hasEntered = false;
 		wander ();
 		step = speed * Time.deltaTime;
+		player = GameObject.FindGameObjectWithTag("Player");
+		rotationSpeed = 5;
 
+		//On start get new destination for wander
+		randomCirclePoint = Random.insideUnitCircle * wanderRadius;
+		destination = new Vector3 (randomCirclePoint.x, randomCirclePoint.y, 0);
+		changeDirection = false;
+		
 	}
 	
 	// Update is called once per frame
 	void Update () {
-
-		//print ((transform.position - wayPoint).magnitude);
-
-
 		//If the player enters the range...seek
 		if (hasEntered) {
 			seek ();
@@ -45,55 +49,53 @@ public class EnemyMovement : MonoBehaviour {
 	void OnTriggerEnter(Collider other) {
 		if (other.gameObject.tag == "Player") {
 			hasEntered = true;
+
 		} 
 
 	}
 
 	//Function that gives enemy a random path
 	void wander(){
-		/*if (transform.position == wayPoint) {
-			wayPoint = Random.insideUnitSphere;
-			wayPoint = transform.position + wayPoint;
-			wayPoint.z = 0;
-		}
-		transform.position = Vector3.MoveTowards (transform.position, wayPoint, step * 0.5f);*/
-
-
-
 		if (transform.position == destination) {
 			//Getting new destination
-			Vector2 randomCirclePoint = Random.insideUnitCircle * wanderRadius;
+			randomCirclePoint = Random.insideUnitCircle * wanderRadius;
 			destination = new Vector3 (randomCirclePoint.x, randomCirclePoint.y, 0);
-
-			playerVec = new Vector2(transform.position.x, transform.position.y);
+			if(!changeDirection){changeDirection = true;}
+			if(changeDirection){changeDirection = false;}
 
 		}
-		/*transform.position = Vector3.MoveTowards (transform.position, destination, step * 0.5f);
-		Vector3 newDir = Vector3.RotateTowards(playerVec, destination, step * 0.5f, 0.0F);*/
-		//Getting rotation
-		float angle = Mathf.Atan2(destination.y, destination.x) * Mathf.Rad2Deg;
-		transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
-
-		/*Vector2 destinationVec = new Vector2 (destination.x, destination.y);
-		float angle = Vector2.Angle (playerVec, destinationVec);
-		transform.rotation = Quaternion.LookRotation(newDir, Vector3.up);
-		print (newDir);*/
+		//Rotate
+		direction = (destination - transform.position).normalized;
+		lookRotation = Quaternion.LookRotation (direction);
+		lookRotation.x = 0;
+		lookRotation.y = 0;
+		if(changeDirection){
+			lookRotation.z = -lookRotation.z;
+		}
+		
+		transform.rotation = Quaternion.Slerp (transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+		transform.position = Vector3.MoveTowards (transform.position, destination, step * 0.5f);
 	}
 
 	//Function that seeks the player
 	void seek(){
+		//Seek Player
 		transform.position = Vector3.MoveTowards (transform.position, player.transform.position, step);
-		
+
+		//Rotate Towards Player
+
+
+		//Check if enemy is within range to attack player
 		float playerX = player.transform.position.x;
 		float playerY = player.transform.position.y;
 		float enemyX = transform.position.x;
 		float enemyY = transform.position.y;
-		
-		if(Mathf.Abs(enemyX - playerX) > 2.5){
+
+		if(Mathf.Abs(enemyX - playerX) > 3.5){
 			hasEntered = false;
 		}
-		if(Mathf.Abs(enemyY - playerY) > 2.5){
+		if(Mathf.Abs(enemyY - playerY) > 3.5){
 			hasEntered = false;
 		}
 	}
