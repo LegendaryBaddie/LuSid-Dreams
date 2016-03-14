@@ -16,6 +16,8 @@ public class FloorGenerator : MonoBehaviour {
 				layout[i,k] = null;
 			}
 		}
+		//seed
+		Seed s = new Seed ("zzzzzzzzzzzz");
 		//generate floor
 		GenerateFloor();
 		// generate each room on floor;

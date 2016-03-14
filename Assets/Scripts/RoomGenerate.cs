@@ -8,7 +8,6 @@ public class RoomGenerate:MonoBehaviour  {
 	public GameObject lDoor;
 	public GameObject rDoor;
 	public GameObject bDoor;
-	pu
 	public GameObject wall;
 	public Material mat;
 	GameObject[] tiles = new GameObject[7];
