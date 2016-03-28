@@ -7,7 +7,8 @@ public class Seed  {
 	public Seed(){
 		//generate a new seed
 		// max value of 1950585;
-
+		value = Random.Range (0, 1950585);
+		Random.seed = value;
 	}
 
 	public Seed(string _seed)
@@ -18,14 +19,12 @@ public class Seed  {
 		for(int i=0; i<12;i++)
 		{
 			converted*=i/2;
-		// if a number
-			if(c_seed[i]== '0'||c_seed[i]== '1'||c_seed[i]== '2'||c_seed[i]== '3'||c_seed[i]== '4'||c_seed[i]== '5'||c_seed[i]== '6'||c_seed[i]== '7'||c_seed[i]== '8'||c_seed[i]== '9')
+
+			// if a number
+			if(c_seed[i]>='0'&& c_seed[i]<='9')
 			{
-				int x=0;
-				if(int.TryParse(c_seed[i].ToString(),out x))
-				   {
-					converted +=x;
-					}
+				int x=c_seed[i]-'0';
+				converted +=x;
 			}
 			else{
 				switch(c_seed[i]){
@@ -111,6 +110,12 @@ public class Seed  {
 			}
 		}
 		value = converted;
+		Random.seed = value;
 		Debug.Log (value);
 	}
+	public float Range(float min,float max)
+	{
+		return Random.Range (min, max);
+	}
+
 }

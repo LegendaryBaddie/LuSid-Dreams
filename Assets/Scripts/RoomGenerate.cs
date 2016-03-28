@@ -24,21 +24,21 @@ public class RoomGenerate:MonoBehaviour  {
 		tiles [6] = wall;
 		Instantiate(plane, new Vector3(0, 0, 0), Quaternion.identity);
 	}
-   	public void miniMapDisplay(int[] position)
+   	public void miniMapDisplay(int x,int y)
 	{
 		GameObject cube = GameObject.CreatePrimitive (PrimitiveType.Cube);
-		if (position [0] == 6 && position [1] == 6) 
+		if (x == 6 && y == 6) 
 		{
 			map = GameObject.CreatePrimitive (PrimitiveType.Cube);
 			
 			map.transform.position= new Vector3(14f,7f,1.0f);
 			map.transform.localScale = new Vector3 (3f,3f, 0);
-			map.GetComponent<MeshRenderer>().material = mat;
+			map.GetComponent<MeshRenderer>().material = Red;
 		}
 
-		cube.transform.parent = map.transform;
-		cube.transform.position= new Vector3(13+position[0]*0.25f,5+position[1]*0.25f,0);
-		cube.transform.localScale = new Vector3 (0.05f, 0.05f, 0);
+		//cube.transform.parent = map.transform;
+		cube.transform.position= new Vector3(13+x*0.25f,5+y*0.25f,0);
+		cube.transform.localScale = new Vector3 (0.15f, 0.15f, 0);
 	}
 	public void displayRoom(Room room, Room[,] layout)
 	{
@@ -57,7 +57,7 @@ public class RoomGenerate:MonoBehaviour  {
 				//mini map
 				if(layout[i,m] != null)
 				{
-				miniMapDisplay (layout[i,m].roomPosition);
+				miniMapDisplay (i,m);
 				}
 			}
 		}

@@ -7,6 +7,7 @@ public class FloorGenerator : MonoBehaviour {
 	public GameObject player;
     public Room[,] layout = new Room[11,11];
 	public int[] position = new int[2] {6,6};
+	Seed sRand;
 	//spritesheet tileSprites
     // Use this for initialization
     void Start () {
@@ -17,7 +18,7 @@ public class FloorGenerator : MonoBehaviour {
 			}
 		}
 		//seed
-		Seed s = new Seed ("zzzzzzzzzzzz");
+		sRand = new Seed ("zzzzzzzzzzzz");
 		//generate floor
 		GenerateFloor();
 		// generate each room on floor;
@@ -48,7 +49,7 @@ public class FloorGenerator : MonoBehaviour {
 		bool empty = false;
 		while (empty!=true) {
 			for (int i = 0; i < 4; i++) {
-				if (touchChance >= Random.Range (0.0f, 1.0f) * 100) {
+				if (touchChance >= sRand.Range (0.0f, 1.0f) * 100) {
 					touching [i] = 1;
 					empty = true;
 				} else {
@@ -58,7 +59,7 @@ public class FloorGenerator : MonoBehaviour {
 		}
 		
 		layout[position[0],position[1]] = new Room (position,touching);
-		layout[position [0], position [1]].Generate ();
+		layout[position [0], position [1]].Generate (sRand);
 		return touching;
 
 	}
