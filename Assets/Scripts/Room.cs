@@ -18,14 +18,15 @@ public class Room {
 	public Room(int[]position, int[]connections)
 	{
 		roomMatrix =new int[11, 11];
-		roomPosition = position;
+		roomPosition[0] = position[0];
+		roomPosition[1] = position[1];
 		connectionsToRooms = connections;
 
 	
 
 
 	}
-	public void Generate()
+	public void Generate(Seed sRand)
 	{
 
 		int xArray = roomMatrix.GetLength(0);
@@ -68,7 +69,7 @@ public class Room {
 					{
 
 						//Debug.Log("I:"+i+"m:"+m+"chance:"+rockChance(i,m));
-						roomMatrix[i,m] = Random.Range(0,tileCount-1);
+						roomMatrix[i,m] = (int) sRand.Range(0,tileCount-1);
 					}
 				}
 			}
