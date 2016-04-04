@@ -18,7 +18,8 @@ public class Room {
 	public Room(int[]position, int[]connections)
 	{
 		roomMatrix =new int[11, 11];
-		roomPosition = position;
+		roomPosition[0] = position[0];
+		roomPosition[1] = position[1];
 		connectionsToRooms = connections;
 
 	
