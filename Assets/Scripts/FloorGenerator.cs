@@ -34,7 +34,7 @@ public class FloorGenerator : MonoBehaviour {
 				}
 			}
 		}
-		gameObject.GetComponent<RoomGenerate> ().displayRoom (layout [6, 6],layout);
+		gameObject.GetComponent<RoomGenerate> ().displayRoom (layout [6,6],layout);
 
 		//debug
 
@@ -58,22 +58,42 @@ public class FloorGenerator : MonoBehaviour {
 
 
 		//check if room has adjacent depenencies
-
-
-
+		if (pos [0] > 0 && pos [0] < 10 && pos [1] > 0 && pos [1] < 10) {
+			if (layout [pos [0] - 1, pos [1]] != null) {
+				if (layout [pos [0] - 1, pos [1]].connectionsToRooms [2] == 1) {
+					touching [0] = 1;
+				}
+			}
+			if (layout [pos [0] + 1, pos [1]] != null) {
+				if (layout [pos [0] + 1, pos [1]].connectionsToRooms [0] == 1) {
+					touching [2] = 1;
+				}
+			}
+			if (layout [pos [0], pos [1] - 1] != null) {
+				if (layout [pos [0], pos [1] - 1].connectionsToRooms [1] == 1) {
+					touching [3] = 1;
+				}
+			}
+			if (layout [pos [0], pos [1] + 1] != null) {
+				if (layout [pos [0], pos [1] + 1].connectionsToRooms [3] == 1) {
+					touching [1] = 1;
+				}
+			}
+		}
 		int touchChance = 50;
 		//do until there is at least one adjacent room
-		bool empty = false;
-		while (empty!=true) {
+
 			for (int i = 0; i < 4; i++) {
+			if(touching[i]==1)
+			{continue;}
 				if (touchChance >= sRand.Range (0.0f, 1.0f) * 100) {
 					touching [i] = 1;
-					empty = true;
+					
 				} else {
 					touching [i] = 0;
 				}
 			}
-		}
+
 		
 		layout[pos[0],pos[1]] = new Room (pos,touching);
 		layout[pos[0], pos[1]].Generate (sRand);
@@ -112,106 +132,13 @@ public class FloorGenerator : MonoBehaviour {
 
 	}
 	void GenerateFloor(){
-
-		//Generate the next room by iterating through the touching of the last room 
-		//check all of the array for touching
-		///connections
-		//int[] untouchedPos = position;
-		//0 = left
 		for (int i = 0; i < 11; i++) {
 			for (int k = 0; k < 11; k++) {
-			if(layout[i,k]!=null)
-				{
-					int[] tempPos= new int[2];
-					if(layout[i,k].connectionsToRooms[0]==1)
-					{
-					
-						if(i==0)
-						{
-							continue;
-						}else{
-						tempPos[0]=i-1;
-						tempPos[1]=k;
-						addRoom(tempPos);
-						}
-					}
-					if(layout[i,k].connectionsToRooms[1]==1)
-					{
-						
-						if(k==0)
-						{
-							continue;
-						}else{
-							tempPos[0]=i;
-							tempPos[1]=k-1;
-							addRoom(tempPos);
-						}
-					}
-					if(layout[i,k].connectionsToRooms[2]==1)
-					{
-						
-						if(i>9)
-						{
-							continue;
-						}else{
-							tempPos[0]=i+1;
-							tempPos[1]=k;
-							addRoom(tempPos);
-						}
-					}
-					if(layout[i,k].connectionsToRooms[3]==1)
-					{
-						
-						if(k>9)
-						{
-							continue;
-						}else{
-							tempPos[0]=i;
-							tempPos[1]=k+1;
-							addRoom(tempPos);
-						}
-					}
-				}
-			}
-		}
-		for (int i = 0; i < 11; i++) {
-			for (int k = 0; k < 11; k++) {
-				if(i>0 && i<10 && k>0 && k<10)
-				{
-					if(layout[i,k]!=null){
-					if(layout[i,k].connectionsToRooms[0]==1)
-					{
-						if(layout[i-1,k]==null)
-						{
-							GenerateFloor();
-						}
-					}
-					if(layout[i,k].connectionsToRooms[1]==1)
-					{
-						if(layout[i,k-1]==null)
-						{
-							GenerateFloor();
-						}
-					}
-					if(layout[i,k].connectionsToRooms[2]==1)
-					{
-						if(layout[i+1,k]==null)
-						{
-							GenerateFloor();
-						}
-					}
-					if(layout[i,k].connectionsToRooms[3]==1)
-					{
-						if(layout[i,k+1]==null)
-						{
-							GenerateFloor();
-						}
-					}
+				if (layout [i, k] != null) {
 
 				}
-				}
+			
 			}
 		}
-		
-	}
+	}	
 }
