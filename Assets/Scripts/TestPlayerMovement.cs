@@ -6,7 +6,11 @@ public class TestPlayerMovement : MonoBehaviour {
 	public float speed = 1.5f;
 	public GameObject enemyPrefab;
 	public int numOfEnemies;
+	public GameObject shooterBarrel;
+	public GameObject prefab;
+	GameObject projectile;
 	int randNum;
+	Vector3 mousePos;
 
 	// Use this for initialization
 	void Start () {
@@ -22,23 +26,28 @@ public class TestPlayerMovement : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update () 
+	{
+		//Rotate player towards mouse direction
+		mousePos = new Vector3 (0, Input.mousePosition.x, Input.mousePosition.y);
+		transform.LookAt (mousePos);
+
+
+		//FOR PLAYER INPUT
 		if (Input.GetKey(KeyCode.LeftArrow))
-		{
 			transform.position += Vector3.left * speed * Time.deltaTime;
-		}
 		else if (Input.GetKey(KeyCode.RightArrow))
-		{
 			transform.position += Vector3.right * speed * Time.deltaTime;
-		}
 		if (Input.GetKey(KeyCode.UpArrow))
-		{
 			transform.position += Vector3.up * speed * Time.deltaTime;
-		}
 		else if (Input.GetKey(KeyCode.DownArrow))
-		{
 			transform.position += Vector3.down * speed * Time.deltaTime;
-		}
+		//If mouse click then shoot 
+		if (Input.GetMouseButtonDown(0))
+			projectile = (GameObject)Instantiate(prefab, shooterBarrel.transform.position, Quaternion.identity);
+
+		//After 1 second destory projectile
+		Destroy (projectile, 3.0f);
 	
 	}
 
@@ -63,8 +72,6 @@ public class TestPlayerMovement : MonoBehaviour {
 			Debug.Log("sdfgdsds");
 			GameObject.Find("FloorManager").GetComponent<FloorGenerator>().changeRoom(3);
 		}
-
 	}
-
 
 }

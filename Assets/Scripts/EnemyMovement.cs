@@ -16,6 +16,9 @@ public class EnemyMovement : MonoBehaviour {
 	private Vector3 direction;
 	bool changeDirection;
 
+	Vector3 rightRotate = new Vector3(0,180,0);
+	int count = 0;
+
 	float step;
 
 	// Use this for initialization
@@ -49,7 +52,6 @@ public class EnemyMovement : MonoBehaviour {
 	void OnTriggerEnter(Collider other) {
 		if (other.gameObject.tag == "Player") {
 			hasEntered = true;
-
 		} 
 
 	}
@@ -60,8 +62,8 @@ public class EnemyMovement : MonoBehaviour {
 			//Getting new destination
 			randomCirclePoint = Random.insideUnitCircle * wanderRadius;
 			destination = new Vector3 (randomCirclePoint.x, randomCirclePoint.y, 0);
-			if(!changeDirection){changeDirection = true;}
-			if(changeDirection){changeDirection = false;}
+			/*if(!changeDirection){changeDirection = true;}
+			if(changeDirection){changeDirection = false;}*/
 
 		}
 
@@ -70,8 +72,12 @@ public class EnemyMovement : MonoBehaviour {
 		lookRotation = Quaternion.LookRotation (direction);
 		lookRotation.x = 0;
 		lookRotation.y = 0;
-		if(changeDirection){
-			lookRotation.z = -lookRotation.z;
+		//If the destination is to the right
+		if((destination.x - transform.position.x)>0){
+			/*if(lookRotation.z < 0){lookRotation.z = lookRotation.z - .5f;}
+			else{lookRotation.z = lookRotation.z + .5f;}*/
+			//lookRotation.z = -lookRotation.z;
+
 		}
 		
 		transform.rotation = Quaternion.Slerp (transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
@@ -84,7 +90,32 @@ public class EnemyMovement : MonoBehaviour {
 		transform.position = Vector3.MoveTowards (transform.position, player.transform.position, step);
 
 		//Rotate Towards Player
+		direction = (player.transform.position - transform.position).normalized;
+		lookRotation = Quaternion.LookRotation (direction);
+		lookRotation.x = 0;
+		lookRotation.y = 0;
 
+
+		/*if ((player.transform.position.x - transform.position.x) > 0)
+		{
+			//lookRotation.y = 180;
+
+			transform.rotation = Quaternion.Euler (new Vector3 (0, count, lookRotation.z));
+			count++;
+			print(transform.rotation);
+		} 
+		else 
+		{
+			//transform.rotation = Quaternion.Euler (new Vector3 (0, 0, lookRotation.z));
+		}*/
+
+		
+		/*transform.rotation = Quaternion.Euler (new Vector3 (0, 0, count));
+		count++;
+		print(transform.rotation);*/
+
+
+		transform.rotation = Quaternion.Slerp (transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
 
 		//Check if enemy is within range to attack player
 		float playerX = player.transform.position.x;
