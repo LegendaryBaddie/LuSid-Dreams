@@ -7,6 +7,7 @@ public class FloorGenerator : MonoBehaviour {
 	public GameObject player;
     public Room[,] layout = new Room[11,11];
 	public int[] position = new int[2] {6,6};
+	Stack<int> lastCheck= new Stack<int>();
 	Seed sRand;
 	//spritesheet tileSprites
     // Use this for initialization
@@ -132,13 +133,34 @@ public class FloorGenerator : MonoBehaviour {
 
 	}
 	void GenerateFloor(){
-		for (int i = 0; i < 11; i++) {
-			for (int k = 0; k < 11; k++) {
-				if (layout [i, k] != null) {
-
+		while (true) {
+			if (layout [position [0], position [1]] != null) {
+				if (layout [postion [0], position [1]].connectionsToRooms [0] == 1 &&layout[position[0]-1,position[1]]==null) {
+					addRoom (position [0] - 1, position [1]);
+					lastCheck.Push(position);
+					position[0]--;
+					continue;
 				}
-			
+				if (layout [postion [0], position [1]].connectionsToRooms [1] == 1 &&layout[position[0],position[1]-1]==null) {
+					addRoom (position [0], position [1]-1);
+					lastCheck.Push(position);
+					position[1]--;
+					continue;
+				}
+				if (layout [postion [0], position [1]].connectionsToRooms [2] == 1 &&layout[position[0]+1,position[1]]==null) {
+					addRoom (position [0]+1, position [1]);
+					lastCheck.Push(position);
+					position[0]++;
+					continue;
+				}
+				if (layout [postion [0], position [1]].connectionsToRooms [3] == 1 &&layout[position[0],position[1]+1]==null) {
+					addRoom (position [0], position [1]+1);
+					lastCheck.Push(position);
+					position[1]++;
+					continue;
+				}
 			}
 		}
+		
 	}	
 }
