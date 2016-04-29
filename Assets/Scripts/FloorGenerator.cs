@@ -59,20 +59,23 @@ public class FloorGenerator : MonoBehaviour {
 
 
 		//check if room has adjacent depenencies
-		if (pos [0] > 0 && pos [0] < 10 && pos [1] > 0 && pos [1] < 10) {
+		if (pos [0] > 0 &&  pos [1] > 0) {
 			if (layout [pos [0] - 1, pos [1]] != null) {
 				if (layout [pos [0] - 1, pos [1]].connectionsToRooms [2] == 1) {
 					touching [0] = 1;
 				}
 			}
-			if (layout [pos [0] + 1, pos [1]] != null) {
-				if (layout [pos [0] + 1, pos [1]].connectionsToRooms [0] == 1) {
-					touching [2] = 1;
-				}
-			}
 			if (layout [pos [0], pos [1] - 1] != null) {
 				if (layout [pos [0], pos [1] - 1].connectionsToRooms [1] == 1) {
 					touching [3] = 1;
+				}
+			}
+        }
+            if(pos[0]<10 && pos[1]<10)
+            {
+            if (layout [pos [0] + 1, pos [1]] != null) {
+				if (layout [pos [0] + 1, pos [1]].connectionsToRooms [0] == 1) {
+					touching [2] = 1;
 				}
 			}
 			if (layout [pos [0], pos [1] + 1] != null) {
@@ -81,7 +84,7 @@ public class FloorGenerator : MonoBehaviour {
 				}
 			}
 		}
-		int touchChance = 50;
+		int touchChance = 33;
 		//do until there is at least one adjacent room
 
 			for (int i = 0; i < 4; i++) {
@@ -135,6 +138,8 @@ public class FloorGenerator : MonoBehaviour {
 	void GenerateFloor(){
 		while (true) {
 			if (layout [position [0], position [1]] != null) {
+                if(position[0]>=1 &&position[1] >=1){
+                    //left
 				if (layout [position [0], position [1]].connectionsToRooms [0] == 1 &&layout[position[0]-1,position[1]]==null) {
 					
                     addRoom (new int[]{position [0] - 1, position [1]});
@@ -143,13 +148,15 @@ public class FloorGenerator : MonoBehaviour {
 					position[0]--;
 					continue;
 				}
-				if (layout [position [0], position [1]].connectionsToRooms [1] == 1 &&layout[position[0],position[1]-1]==null) {
-					addRoom (new int[]{position [0], position [1]-1});
+                //bottom
+				if (layout [position [0], position [1]].connectionsToRooms [1] == 1 &&layout[position[0],position[1]+1]==null) {
+					addRoom (new int[]{position [0], position [1]+1});
                         Debug.Log(position[0]+","+position[1]);
 					lastCheck.Push(new int[]{position [0], position [1]});
-					position[1]--;
+					position[1]++;
 					continue;
 				}
+                //right
 				if (layout [position [0], position [1]].connectionsToRooms [2] == 1 &&layout[position[0]+1,position[1]]==null) {
 					addRoom (new int[]{position [0]+1, position [1]});
                         Debug.Log(position[0]+","+position[1]);
@@ -157,27 +164,44 @@ public class FloorGenerator : MonoBehaviour {
 					position[0]++;
 					continue;
 				}
-            
-				if (layout [position [0], position [1]].connectionsToRooms [3] == 1 &&layout[position[0],position[1]+1]==null) {
-					addRoom (new int[]{position [0], position [1]+1});
+                //top
+				if (layout [position [0], position [1]].connectionsToRooms [3] == 1 &&layout[position[0],position[1]-1]==null) {
+					addRoom (new int[]{position [0], position [1]-1});
                         Debug.Log(position[0]+","+position[1]);
 					lastCheck.Push(new int[]{position [0], position [1]});
-					position[1]++;
+					position[1]--;
 					continue;
 				}
                // if nothing left pop back one
-               if(lastCheck.Count>0)
+               if(lastCheck.Count>1)
                {
-               int[] a = lastCheck.Pop();
+               lastCheck.Pop();
+               int[] a = lastCheck.Peek();
                position[0]=a[0];
                position[1]=a[1];
                Debug.Log("backd one"+a[0]+","+a[1]);
                continue;
                }
+              
+              }
+              {
+                if(lastCheck.Count>1)
+               {
+               lastCheck.Pop();
+               int[] a = lastCheck.Peek();
+               position[0]=a[0];
+               position[1]=a[1];
+               Debug.Log("backd one"+a[0]+","+a[1]);
+               continue;
+               }
+              
+              }
 			}
             
             break;
 		}
+       
+            
 		
 	}	
 }

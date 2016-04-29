@@ -78,11 +78,9 @@ public class Room {
 	}
 	float rockChance(int itterationX, int itterationY)
 	{
-		float chance = itterationX + itterationY;
-		chance /= 2;
-		chance = 5 - chance;
-		chance = chance / 121;
-		return chance;
+		
+    }
+}
 	}
 
 }

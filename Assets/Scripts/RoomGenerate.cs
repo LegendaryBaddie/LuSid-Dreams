@@ -29,6 +29,18 @@ public class RoomGenerate:MonoBehaviour  {
 		map.transform.localScale = new Vector3 (3f,3f, 0.01f);
 		map.GetComponent<MeshRenderer>().material = mat;
 		map.tag="Map";
+        
+        
+      /*  for(int r = 0; r < m1.dimensions; ++r){
+        for(int c = 0; c < m1.dimensions; ++c){
+        Double x = r.doubleValue();
+        Double y = c.doubleValue();
+        Double rate = 100.0/(m1.dimensions-6);
+        Double firstDisparity = Math.abs(((m1.dimensions-1)/2)-r.doubleValue())*rate;
+        Double secondDisparity = Math.abs(((m1.dimensions-1)/2)-c.doubleValue())*rate;
+        m1.grid[r][c] = 100-(firstDisparity+secondDisparity);*/
+    }
+}
 	}
    	public void miniMapDisplay(int x,int y,bool currRoom)
 	{
