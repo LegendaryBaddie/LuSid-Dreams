@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using System.Collections.Generic;
 public class FloorGenerator : MonoBehaviour {
 
    
 	public GameObject player;
     public Room[,] layout = new Room[11,11];
 	public int[] position = new int[2] {6,6};
-	Stack<int> lastCheck= new Stack<int>();
+	Stack<int[]> lastCheck= new Stack<int[]>();
 	Seed sRand;
 	//spritesheet tileSprites
     // Use this for initialization
@@ -135,31 +135,48 @@ public class FloorGenerator : MonoBehaviour {
 	void GenerateFloor(){
 		while (true) {
 			if (layout [position [0], position [1]] != null) {
-				if (layout [postion [0], position [1]].connectionsToRooms [0] == 1 &&layout[position[0]-1,position[1]]==null) {
-					addRoom (position [0] - 1, position [1]);
-					lastCheck.Push(position);
+				if (layout [position [0], position [1]].connectionsToRooms [0] == 1 &&layout[position[0]-1,position[1]]==null) {
+					
+                    addRoom (new int[]{position [0] - 1, position [1]});
+                        Debug.Log(position[0]+","+position[1]);
+					lastCheck.Push(new int[]{position [0], position [1]});
 					position[0]--;
 					continue;
 				}
-				if (layout [postion [0], position [1]].connectionsToRooms [1] == 1 &&layout[position[0],position[1]-1]==null) {
-					addRoom (position [0], position [1]-1);
-					lastCheck.Push(position);
+				if (layout [position [0], position [1]].connectionsToRooms [1] == 1 &&layout[position[0],position[1]-1]==null) {
+					addRoom (new int[]{position [0], position [1]-1});
+                        Debug.Log(position[0]+","+position[1]);
+					lastCheck.Push(new int[]{position [0], position [1]});
 					position[1]--;
 					continue;
 				}
-				if (layout [postion [0], position [1]].connectionsToRooms [2] == 1 &&layout[position[0]+1,position[1]]==null) {
-					addRoom (position [0]+1, position [1]);
-					lastCheck.Push(position);
+				if (layout [position [0], position [1]].connectionsToRooms [2] == 1 &&layout[position[0]+1,position[1]]==null) {
+					addRoom (new int[]{position [0]+1, position [1]});
+                        Debug.Log(position[0]+","+position[1]);
+					lastCheck.Push(new int[]{position [0], position [1]});
 					position[0]++;
 					continue;
 				}
-				if (layout [postion [0], position [1]].connectionsToRooms [3] == 1 &&layout[position[0],position[1]+1]==null) {
-					addRoom (position [0], position [1]+1);
-					lastCheck.Push(position);
+            
+				if (layout [position [0], position [1]].connectionsToRooms [3] == 1 &&layout[position[0],position[1]+1]==null) {
+					addRoom (new int[]{position [0], position [1]+1});
+                        Debug.Log(position[0]+","+position[1]);
+					lastCheck.Push(new int[]{position [0], position [1]});
 					position[1]++;
 					continue;
 				}
+               // if nothing left pop back one
+               if(lastCheck.Count>0)
+               {
+               int[] a = lastCheck.Pop();
+               position[0]=a[0];
+               position[1]=a[1];
+               Debug.Log("backd one"+a[0]+","+a[1]);
+               continue;
+               }
 			}
+            
+            break;
 		}
 		
 	}	
