@@ -32,7 +32,9 @@ public class FloorGenerator : MonoBehaviour {
 				if(layout[i,m]!=null)
 				{
 					Debug.Log("room " +layout[i,m].roomPosition[0]+","+layout[i,m].roomPosition[1] + " left: "+layout[i,m].connectionsToRooms[0]+" top: "+layout[i,m].connectionsToRooms[1]+" right: "+layout[i,m].connectionsToRooms[2]+" bottom: "+layout[i,m].connectionsToRooms[3]);
-				}
+				    layout[i,m].rockChance(sRand);
+                }
+               
 			}
 		}
 		gameObject.GetComponent<RoomGenerate> ().displayRoom (layout [6,6],layout);
