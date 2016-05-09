@@ -31,7 +31,7 @@ public class Room {
 
 		int xArray = roomMatrix.GetLength(0);
 		int yArray = roomMatrix.GetLength(1);
-		rockChance();
+		
 		for (int i = 0; i < xArray; i++)
 		{
 			for (int m = 0; m < yArray; m++)
@@ -67,31 +67,40 @@ public class Room {
 					}
 					else // actually do room generation
 					{
-                        if(rockMatrix[i,m]>100)
-                        {
-                            roomMatrix[i,m]=6;
-                        }
-						else{
+                      
+						
 						roomMatrix[i,m] = (int) sRand.Range(0,tileCount-1);
-                        }
+                        
 					}
 				}
 			}
 		}
 		
 	}
-	void rockChance()
+	public void rockChance(Seed sRand)
 	{
 		for(int r = 0; r < 11; ++r){
         for(int c = 0; c < 11; ++c){
         
-        float rate = 33.0f/(6);
+        float rate = 100.0f/(4);
         float firstDisparity = Mathf.Abs(((10)/2)-r)*rate;
         float secondDisparity = Mathf.Abs(((10)/2)-c)*rate;
-        double chance =   (double)(Mathf.Abs(100-(firstDisparity+secondDisparity)));
+        double chance = (double)(100-(firstDisparity+secondDisparity));
+        if(chance <0)
+        {
+        rockMatrix[r,c] = 0; 
+        }else{
         rockMatrix[r,c] = chance;
         }
         }
+        }
+        for(int r = 0; r < 10; ++r){
+        for(int c = 0; c < 10; ++c){
+            if(sRand.Range(0,100)<rockMatrix[r,c])
+            {
+                roomMatrix[r,c] = 6;
+            }
+        }}
     }
 
 }
