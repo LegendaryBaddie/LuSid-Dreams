@@ -110,7 +110,7 @@ public class FloorGenerator : MonoBehaviour {
 		//left
 		if (direction == 0) {
 			position[0]+=1;
-			player.transform.position = new Vector3(8.5f,5,0)  ;
+			player.transform.position = new Vector3(1.1f,5,0)  ;
 		}
 		//top
 		else if (direction == 1) {
@@ -120,7 +120,7 @@ public class FloorGenerator : MonoBehaviour {
 		//right
 		else if (direction == 2) {
 			position[0]-=1;
-			player.transform.position = new Vector3(1.5f,5,0)  ;
+			player.transform.position = new Vector3(8.9f,5,0)  ;
 		}
 		//bottom
 		else if (direction == 3) {

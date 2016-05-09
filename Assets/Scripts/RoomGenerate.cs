@@ -40,8 +40,7 @@ public class RoomGenerate:MonoBehaviour  {
         Double secondDisparity = Math.abs(((m1.dimensions-1)/2)-c.doubleValue())*rate;
         m1.grid[r][c] = 100-(firstDisparity+secondDisparity);*/
     }
-}
-	}
+
    	public void miniMapDisplay(int x,int y,bool currRoom)
 	{
 
