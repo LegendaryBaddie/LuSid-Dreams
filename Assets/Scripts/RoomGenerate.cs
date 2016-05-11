@@ -68,7 +68,7 @@ public class RoomGenerate:MonoBehaviour  {
 			for (int m = 0; m < 11; m++)
 			{
 				// instantate a new tile as child with a unique name
-				GameObject tile = (GameObject)Instantiate(tiles[room.roomMatrix[i,m]], new Vector3(i, m, 0), Quaternion.identity);
+				GameObject tile = (GameObject)Instantiate(tiles[room.roomMatrix[i,m]], new Vector3(i+room.roomPosition[0]*10, m+room.roomPosition[1]*10, 0), Quaternion.identity);
 				tile.transform.parent = GameObject.Find("Plane(Clone)").transform;
 				// 0,0 is bottome left hand corner.
 				tile.name = "Tile Column:" + i + "Row:" + m;
@@ -78,9 +78,9 @@ public class RoomGenerate:MonoBehaviour  {
 				{
 					if(i==room.roomPosition[0]&&m==room.roomPosition[1])
 					{
-						miniMapDisplay (i,m,true);
+						//miniMapDisplay (i,m,true);
 					}else{
-					miniMapDisplay (i,m,false);
+					//miniMapDisplay (i,m,false);
 					}
 				}
 			}
