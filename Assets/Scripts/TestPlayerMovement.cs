@@ -8,12 +8,23 @@ public class TestPlayerMovement : MonoBehaviour {
 	public int numOfEnemies;
 	public GameObject shooterBarrel;
 	public GameObject prefab;
+	public Sprite human;
+	public int health;
 	GameObject projectile;
 	int randNum;
 	Vector3 mousePos;
+	Sprite[] charSpriteArray = new Sprite[10];
 
 	// Use this for initialization
 	void Start () {
+		//Set health
+		health = 100;
+
+		//Fill character sprite array with starter
+		charSpriteArray[0] = human;
+
+		//Set character sprite
+		transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().sprite = charSpriteArray[0];
 
 		for (int i = 1; i < numOfEnemies + 1; i++) {
 			//Get random coordinates
@@ -28,11 +39,6 @@ public class TestPlayerMovement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-		//Rotate player towards mouse direction
-		/*mousePos = new Vector3 (Input.mousePosition.x, Input.mousePosition.y, 0);
-		transform.LookAt (mousePos);*/
-
-
 		//FOR PLAYER INPUT
 		if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
 			transform.position += Vector3.left * speed * Time.deltaTime;
@@ -48,7 +54,16 @@ public class TestPlayerMovement : MonoBehaviour {
 
 		//After 1 second destory projectile
 		Destroy (projectile, 3.0f);
+
+		//Update Bar
+		updateHealthBar();
 	
+	}
+
+	//Function that updates the health bar based on health
+	void updateHealthBar(){
+		float newBarSize = transform.GetChild(2).localScale.x * (health/100);
+		transform.GetChild (2).localScale = new Vector3 (newBarSize, transform.GetChild (2).localScale.y, transform.GetChild (2).localScale.z);
 	}
 
 	void OnTriggerEnter2D(Collider2D obj){
@@ -71,6 +86,15 @@ public class TestPlayerMovement : MonoBehaviour {
 		{
 			Debug.Log("sdfgdsds");
 			GameObject.Find("FloorManager").GetComponent<FloorGenerator>().changeRoom(3);
+		}
+	}
+
+	void OnTriggerEnter(Collider col){
+		if (col.gameObject.tag == "Collectable") {
+			//Get Sprite info
+			transform.GetChild (0).gameObject.GetComponent<SpriteRenderer> ().sprite = col.GetComponent<CollectableScript> ().spriteInfo;
+
+			Destroy (col.gameObject);
 		}
 	}
 

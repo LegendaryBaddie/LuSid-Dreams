@@ -5,7 +5,10 @@ public class EnemyMovement : MonoBehaviour {
 
 	GameObject player;
 	public float speed;
+	GameObject sprite;
 	bool hasEntered;
+	bool flipTime;
+	bool firstTime;
 
 	//For wander
 	float wanderRadius = 5.0f;
@@ -29,6 +32,9 @@ public class EnemyMovement : MonoBehaviour {
 		step = speed * Time.deltaTime;
 		player = GameObject.FindGameObjectWithTag("Player");
 		rotationSpeed = 5;
+		sprite =  GameObject.FindWithTag("EnemySprite");
+		flipTime = true;
+		firstTime = true;
 
 		//On start get new destination for wander
 		randomCirclePoint = Random.insideUnitCircle * wanderRadius;
@@ -62,9 +68,7 @@ public class EnemyMovement : MonoBehaviour {
 			//Getting new destination
 			randomCirclePoint = Random.insideUnitCircle * wanderRadius;
 			destination = new Vector3 (randomCirclePoint.x, randomCirclePoint.y, 0);
-			/*if(!changeDirection){changeDirection = true;}
-			if(changeDirection){changeDirection = false;}*/
-
+			flipTime = true;
 		}
 
 		//Rotate
@@ -72,16 +76,19 @@ public class EnemyMovement : MonoBehaviour {
 		lookRotation = Quaternion.LookRotation (direction);
 		lookRotation.x = 0;
 		lookRotation.y = 0;
-		//If the destination is to the right
-		if((destination.x - transform.position.x)>0){
-			/*if(lookRotation.z < 0){lookRotation.z = lookRotation.z - .5f;}
-			else{lookRotation.z = lookRotation.z + .5f;}*/
-			//lookRotation.z = -lookRotation.z;
 
+		//If the destination is to the right
+		if ((destination.x - transform.position.x) > 0 && flipTime) {
+			transform.localScale = new Vector3 (transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+		}
+		else if(flipTime && !firstTime){
+			transform.localScale = new Vector3 (transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
 		}
 		
 		transform.rotation = Quaternion.Slerp (transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
 		transform.position = Vector3.MoveTowards (transform.position, destination, step * 0.5f);
+		flipTime = false;
+		firstTime = false;
 	}
 
 	//Function that seeks the player
@@ -94,26 +101,14 @@ public class EnemyMovement : MonoBehaviour {
 		lookRotation = Quaternion.LookRotation (direction);
 		lookRotation.x = 0;
 		lookRotation.y = 0;
-
-
-		/*if ((player.transform.position.x - transform.position.x) > 0)
-		{
-			//lookRotation.y = 180;
-
-			transform.rotation = Quaternion.Euler (new Vector3 (0, count, lookRotation.z));
-			count++;
-			print(transform.rotation);
-		} 
-		else 
-		{
-			//transform.rotation = Quaternion.Euler (new Vector3 (0, 0, lookRotation.z));
-		}*/
-
 		
-		/*transform.rotation = Quaternion.Euler (new Vector3 (0, 0, count));
-		count++;
-		print(transform.rotation);*/
-
+		//If the destination is to the right
+		if ((player.transform.position.x - transform.position.x) > 0 && flipTime) {
+			transform.localScale = new Vector3 (transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+		}
+		else if(flipTime && !firstTime){
+			transform.localScale = new Vector3 (transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+		}
 
 		transform.rotation = Quaternion.Slerp (transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
 
@@ -123,12 +118,33 @@ public class EnemyMovement : MonoBehaviour {
 		float enemyX = transform.position.x;
 		float enemyY = transform.position.y;
 
+		//If not in seeking range
 		if(Mathf.Abs(enemyX - playerX) > 3.5){
 			hasEntered = false;
 		}
 		if(Mathf.Abs(enemyY - playerY) > 3.5){
 			hasEntered = false;
 		}
+
+		//If in attacking range
+
+		//Attack
+		if(Mathf.Abs(enemyX - playerX) == 0){
+			attack(player);
+			print("Attack");
+		}
+		if(Mathf.Abs(enemyY - playerY) == 0){
+			attack(player);
+			print("Attack");
+		}
+	}
+
+	//Attack function that gives damage to player health
+	void attack(GameObject player){
+		//Push player back
+		player.transform.position = new Vector3(player.transform.position.x - 0.9f, player.transform.position.y, player.transform.position.z);
+		//Give damage
+		player.GetComponent<TestPlayerMovement> ().health -= 5;
 	}
 
 

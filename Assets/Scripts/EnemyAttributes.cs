@@ -3,6 +3,8 @@ using System.Collections;
 
 public class EnemyAttributes : MonoBehaviour {
 
+	public GameObject collectPrefab;
+	GameObject collectable;
 	string enemeyType;
 	int attackDamage;
 	int health;
@@ -29,6 +31,7 @@ public class EnemyAttributes : MonoBehaviour {
 	{
 		//Destroy the enemy if it is dead
 		if (isDead()) {
+			dropCollectable();
 			Destroy(gameObject);
 		}
 	}
@@ -37,6 +40,22 @@ public class EnemyAttributes : MonoBehaviour {
 	public void takeDamage(int damage)
 	{
 		health -= damage;
+	}
+
+	//Function that drops a collectable
+	void dropCollectable(){
+		//10% Drop rate
+		int randNum = Random.Range(1,10);
+
+		//Instantiate if correct
+		if (randNum <= 5) {
+			collectable = Instantiate (collectPrefab, transform.position, Quaternion.identity) as GameObject;
+
+			//Get Sprite info
+			GameObject child = transform.GetChild(1).gameObject;
+			SpriteRenderer sr = child.GetComponent<SpriteRenderer>();
+			collectable.GetComponent<CollectableScript>().spriteInfo = sr.sprite;
+		}
 	}
 
 	//Function that checks if the enemy is dead
