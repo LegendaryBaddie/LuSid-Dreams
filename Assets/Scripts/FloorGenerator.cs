@@ -19,10 +19,11 @@ public class FloorGenerator : MonoBehaviour {
 			}
 		}
 		//seed
-		sRand = new Seed ("zzzzzzzzzzzz");
+		//sRand = new Seed ("zzzzzzzzzzzz");
+        sRand = new Seed();
 		//generate floor
 		addRoom (position);
-		GenerateFloor();
+		generateFloor();
 		// generate each room on floor;
 		position [0] = 6;
 		position [1] = 6;
@@ -37,8 +38,12 @@ public class FloorGenerator : MonoBehaviour {
                
 			}
 		}
-		gameObject.GetComponent<RoomGenerate> ().displayRoom (layout [6,6],layout);
-
+        for(int i=0;i<11;i++){
+			for(int m=0;m<11;m++)
+			{if(layout[i,m]!=null)
+				{
+		gameObject.GetComponent<RoomGenerate> ().displayRoom (layout [i,m],layout);
+                } }}
 		//debug
 
 
@@ -137,7 +142,37 @@ public class FloorGenerator : MonoBehaviour {
 		gameObject.GetComponent<RoomGenerate> ().displayRoom (layout [position[0], position[1]],layout);
 
 	}
-	void GenerateFloor(){
+    void checkFloor()
+    {
+        for(int i=0;i<11;i++){
+			for(int m=0;m<11;m++)
+			{
+                if(layout[i,m]!=null)
+				{
+                    //check if all doorways to each room actually connect to a room.
+                   
+                        if(layout[i,m].connectionsToRooms[0]==1)
+                        {
+                            
+                        }
+                        if(layout[i,m].connectionsToRooms[1]==1)
+                        {
+                            
+                        }
+                        if(layout[i,m].connectionsToRooms[2]==1)
+                        {
+                            
+                        }
+                        if(layout[i,m].connectionsToRooms[3]==1)
+                        {
+                            
+                        }
+                    
+                }
+            }
+        }
+    }
+	void generateFloor(){
 		while (true) {
 			if (layout [position [0], position [1]] != null) {
                 if(position[0]>=1 &&position[1] >=1){
@@ -175,10 +210,11 @@ public class FloorGenerator : MonoBehaviour {
 					continue;
 				}
                // if nothing left pop back one
-               if(lastCheck.Count>1)
+               if(lastCheck.Count>=1)
                {
-               lastCheck.Pop();
+               
                int[] a = lastCheck.Peek();
+               lastCheck.Pop();
                position[0]=a[0];
                position[1]=a[1];
                Debug.Log("backd one"+a[0]+","+a[1]);
@@ -186,18 +222,7 @@ public class FloorGenerator : MonoBehaviour {
                }
               
               }
-              {
-                if(lastCheck.Count>1)
-               {
-               lastCheck.Pop();
-               int[] a = lastCheck.Peek();
-               position[0]=a[0];
-               position[1]=a[1];
-               Debug.Log("backd one"+a[0]+","+a[1]);
-               continue;
-               }
-              
-              }
+             
 			}
             
             break;
