@@ -141,8 +141,7 @@ public class FloorGenerator : MonoBehaviour {
 	}
     void doorToNextFloor(Seed sRand){
         //randomly choose a room that isn't the starting room and add a door.
-        while(true)
-        {
+      
        for(int i=0;i<11;i++){
 			for(int m=0;m<11;m++)
 			{
@@ -150,7 +149,7 @@ public class FloorGenerator : MonoBehaviour {
                 {
                 if(i!=6&&m!=6)
                     {
-                     if(sRand.Range(0,100)<25)
+                     if(sRand.Range(0,100)<99)
                      {
                          Debug.Log(i+" "+m);
                          layout[i,m].hasDoor = true;
@@ -161,14 +160,14 @@ public class FloorGenerator : MonoBehaviour {
                 }
             }
         }
-        }
+        
     }
     public void changeFloor(){
        //Reset game values 
        layout = new Room[11,11];
 	   position = new int[2] {6,6};
 	   lastCheck= new Stack<int[]>();
-       GameObject.Destroy(GameObject.Find("Plane(Clone)"));
+       //GameObject.Destroy(GameObject.Find("Plane(Clone)"));
        //generate new stuff
        
        for (int i = 0; i < 11; i++) {

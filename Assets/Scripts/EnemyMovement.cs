@@ -15,7 +15,7 @@ public class EnemyMovement : MonoBehaviour {
 	float timer = 3;
 
 	//For wander
-	float wanderRadius = 5.0f;
+	float wanderRadius = 1.0f;
 	Vector3 destination = Vector3.zero;
 	Vector2 randomCirclePoint;
 	public float rotationSpeed;

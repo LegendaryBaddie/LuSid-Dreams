@@ -77,7 +77,7 @@ public class TestPlayerMovement : MonoBehaviour {
 		transform.GetChild (2).localScale = new Vector3 (newBarSize, transform.GetChild (2).localScale.y, transform.GetChild (2).localScale.z);
 	}
 
-	void OnTriggerEnter2D(Collider2D obj){
+	/*void OnTriggerEnter2D(Collider2D obj){
 		if (obj.tag=="TDoor")
 		{
 			Debug.Log("sdfgdsds");
@@ -103,7 +103,8 @@ public class TestPlayerMovement : MonoBehaviour {
 			Debug.Log("sdfgdsds");
 			GameObject.Find("FloorManager").GetComponent<FloorGenerator>().changeFloor();
 		}
-	}
+	}*/
+
 
 	//Collision check for collectables
 	void OnTriggerEnter(Collider col){
@@ -128,6 +129,33 @@ public class TestPlayerMovement : MonoBehaviour {
 			
 
 			Destroy (col.gameObject);
+		}
+
+		//DOOR
+		if (col.tag=="TDoor")
+		{
+			Debug.Log("sdfgdsds");
+			GameObject.Find("FloorManager").GetComponent<FloorGenerator>().changeRoom(1);
+		}
+		else if (col.tag=="RDoor")
+		{
+			Debug.Log("sdfgdsds");
+			GameObject.Find("FloorManager").GetComponent<FloorGenerator>().changeRoom(0);
+		}
+		else if (col.tag=="LDoor")
+		{
+			Debug.Log("sdfgdsds");
+			GameObject.Find("FloorManager").GetComponent<FloorGenerator>().changeRoom(2);
+		}
+		else if (col.tag=="BDoor")
+		{
+			Debug.Log("sdfgdsds");
+			GameObject.Find("FloorManager").GetComponent<FloorGenerator>().changeRoom(3);
+		}
+		else if (col.tag=="Stairs")
+		{
+			Debug.Log("sdfgdsds");
+			GameObject.Find("FloorManager").GetComponent<FloorGenerator>().changeFloor();
 		}
 	}
 
