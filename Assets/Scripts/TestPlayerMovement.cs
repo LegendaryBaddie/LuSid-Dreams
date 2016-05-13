@@ -98,6 +98,11 @@ public class TestPlayerMovement : MonoBehaviour {
 			Debug.Log("sdfgdsds");
 			GameObject.Find("FloorManager").GetComponent<FloorGenerator>().changeRoom(3);
 		}
+        else if (obj.tag=="Stairs")
+		{
+			Debug.Log("sdfgdsds");
+			GameObject.Find("FloorManager").GetComponent<FloorGenerator>().changeFloor();
+		}
 	}
 
 	//Collision check for collectables
