@@ -3,14 +3,16 @@ using System.Collections;
 
 public class RoomGenerate:MonoBehaviour  {
     
-	public GameObject basicTile;
-	public GameObject tDoor;
-	public GameObject lDoor;
-	public GameObject rDoor;
-	public GameObject bDoor;
-	public GameObject wall;
+    public GameObject basicTile;
+    public GameObject tDoor;
+    public GameObject lDoor;
+    public GameObject rDoor;
+    public GameObject bDoor;
+    public GameObject wall;
+    public GameObject stairsUp;
+    public GameObject stairsDown;
 	public Material mat;
-	GameObject[] tiles = new GameObject[7];
+	GameObject[] tiles = new GameObject[9];
 	public GameObject plane;
 	GameObject map;
 	void Start()
@@ -22,6 +24,8 @@ public class RoomGenerate:MonoBehaviour  {
 		tiles [4] = rDoor;
 		tiles [5] = bDoor;
 		tiles [6] = wall;
+        tiles [7] = stairsDown;
+        tiles [8] = stairsUp;
 		Instantiate(plane, new Vector3(0, 0, 0), Quaternion.identity);
 		map = GameObject.CreatePrimitive (PrimitiveType.Cube);
 		
@@ -68,7 +72,7 @@ public class RoomGenerate:MonoBehaviour  {
 			for (int m = 0; m < 11; m++)
 			{
 				// instantate a new tile as child with a unique name
-				GameObject tile = (GameObject)Instantiate(tiles[room.roomMatrix[i,m]], new Vector3(i+room.roomPosition[0]*10, m+room.roomPosition[1]*10, 0), Quaternion.identity);
+				GameObject tile = (GameObject)Instantiate(tiles[room.roomMatrix[i,m]], new Vector3(i, m, 0), Quaternion.identity);
 				tile.transform.parent = GameObject.Find("Plane(Clone)").transform;
 				// 0,0 is bottome left hand corner.
 				tile.name = "Tile Column:" + i + "Row:" + m;

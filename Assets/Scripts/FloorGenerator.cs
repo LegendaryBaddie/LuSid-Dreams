@@ -25,6 +25,7 @@ public class FloorGenerator : MonoBehaviour {
 		addRoom (position);
 		generateFloor();
 		// generate each room on floor;
+        checkFloor();
 		position [0] = 6;
 		position [1] = 6;
 		for(int i=0;i<11;i++){
@@ -38,13 +39,9 @@ public class FloorGenerator : MonoBehaviour {
                
 			}
 		}
-        for(int i=0;i<11;i++){
-			for(int m=0;m<11;m++)
-			{if(layout[i,m]!=null)
-				{
-		gameObject.GetComponent<RoomGenerate> ().displayRoom (layout [i,m],layout);
-                } }}
-		//debug
+        doorToNextFloor(sRand);
+		gameObject.GetComponent<RoomGenerate> ().displayRoom (layout [6,6],layout);
+        
 
 
     }
@@ -142,6 +139,62 @@ public class FloorGenerator : MonoBehaviour {
 		gameObject.GetComponent<RoomGenerate> ().displayRoom (layout [position[0], position[1]],layout);
 
 	}
+    void doorToNextFloor(Seed sRand){
+        //randomly choose a room that isn't the starting room and add a door.
+        while(true)
+        {
+       for(int i=0;i<11;i++){
+			for(int m=0;m<11;m++)
+			{
+            if(layout[i,m] !=null)
+                {
+                if(i!=6&&m!=6)
+                    {
+                     if(sRand.Range(0,100)<25)
+                     {
+                         Debug.Log(i+" "+m);
+                         layout[i,m].hasDoor = true;
+                         layout[i,m].roomMatrix[5,5] = 7;
+                         return;
+                     }
+                    }
+                }
+            }
+        }
+        }
+    }
+    public void changeFloor(){
+       //Reset game values 
+       layout = new Room[11,11];
+	   position = new int[2] {6,6};
+	   lastCheck= new Stack<int[]>();
+       GameObject.Destroy(GameObject.Find("Plane(Clone)"));
+       //generate new stuff
+       
+       for (int i = 0; i < 11; i++) {
+			for (int k = 0; k < 11; k++) {
+				layout[i,k] = null;
+			}
+		}
+        addRoom (position);
+		generateFloor();
+		// generate each room on floor;
+		position [0] = 6;
+		position [1] = 6;
+		for(int i=0;i<11;i++){
+			for(int m=0;m<11;m++)
+			{
+				if(layout[i,m]!=null)
+				{
+					Debug.Log("room " +layout[i,m].roomPosition[0]+","+layout[i,m].roomPosition[1] + " left: "+layout[i,m].connectionsToRooms[0]+" top: "+layout[i,m].connectionsToRooms[1]+" right: "+layout[i,m].connectionsToRooms[2]+" bottom: "+layout[i,m].connectionsToRooms[3]);
+				    layout[i,m].rockChance(sRand);
+                }
+               
+			}
+		}
+       
+		gameObject.GetComponent<RoomGenerate> ().displayRoom (layout [6,6],layout);
+    }
     void checkFloor()
     {
         for(int i=0;i<11;i++){
@@ -153,19 +206,31 @@ public class FloorGenerator : MonoBehaviour {
                    
                         if(layout[i,m].connectionsToRooms[0]==1)
                         {
-                            
+                            if(layout[i-1,m]==null)
+                            {
+                            layout[i,m].roomMatrix[0,5]= 1;
+                            }
                         }
                         if(layout[i,m].connectionsToRooms[1]==1)
                         {
-                            
+                            if(layout[i,m+1]==null)
+                            {
+                            layout[i,m].roomMatrix[5,10]= 1;
+                            }
                         }
                         if(layout[i,m].connectionsToRooms[2]==1)
                         {
-                            
+                            if(layout[i+1,m]==null)
+                            {
+                            layout[i,m].roomMatrix[10,5]= 1;
+                            }
                         }
                         if(layout[i,m].connectionsToRooms[3]==1)
                         {
-                            
+                            if(layout[i,m-1]==null)
+                            {
+                            layout[i,m].roomMatrix[5,0]= 1;
+                            }
                         }
                     
                 }
@@ -175,7 +240,7 @@ public class FloorGenerator : MonoBehaviour {
 	void generateFloor(){
 		while (true) {
 			if (layout [position [0], position [1]] != null) {
-                if(position[0]>=1 &&position[1] >=1){
+                if(position[0]>=1 &&position[1] >=1 && position[0]<=10 &&position[1] <=10){
                     //left
 				if (layout [position [0], position [1]].connectionsToRooms [0] == 1 &&layout[position[0]-1,position[1]]==null) {
 					
@@ -193,6 +258,7 @@ public class FloorGenerator : MonoBehaviour {
 					position[1]++;
 					continue;
 				}
+                
                 //right
 				if (layout [position [0], position [1]].connectionsToRooms [2] == 1 &&layout[position[0]+1,position[1]]==null) {
 					addRoom (new int[]{position [0]+1, position [1]});
@@ -209,6 +275,7 @@ public class FloorGenerator : MonoBehaviour {
 					position[1]--;
 					continue;
 				}
+                }
                // if nothing left pop back one
                if(lastCheck.Count>=1)
                {
@@ -221,7 +288,7 @@ public class FloorGenerator : MonoBehaviour {
                continue;
                }
               
-              }
+              
              
 			}
             
