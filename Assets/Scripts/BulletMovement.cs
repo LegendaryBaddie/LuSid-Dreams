@@ -6,13 +6,17 @@ public class BulletMovement : MonoBehaviour {
 	GameObject player;
 	int damage;
 	int speed;
+	public Sprite spriteInfo;
+	public SpriteRenderer sr;
 
 	// Use this for initialization
 	void Start () 
 	{
+		print (spriteInfo);
 		damage = 33;
 		speed = 5;
 		player =  GameObject.FindGameObjectWithTag("ProjStart");
+		sr.sprite = spriteInfo;
 	}
 	
 	// Update is called once per frame
@@ -20,15 +24,6 @@ public class BulletMovement : MonoBehaviour {
 	{
 		transform.position += player.transform.right * Time.deltaTime * speed;
 	}
-
-	//Check Collision with enemy
-	/*void onTriggerEnter(Collider col){
-		print ("Here");
-
-		//Deal damage to enemy
-		if (col.gameObject.tag == "Enemy") 
-			col.gameObject.GetComponent<EnemyAttributes>().takeDamage(10);
-	}*/
 
 	void OnCollisionEnter(Collision col) {
 		if (col.gameObject.tag == "Enemy")

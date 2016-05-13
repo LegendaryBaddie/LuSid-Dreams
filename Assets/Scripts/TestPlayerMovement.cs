@@ -1,19 +1,25 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class TestPlayerMovement : MonoBehaviour {
 
 	public float speed = 1.5f;
-	public GameObject enemyPrefab;
-	public int numOfEnemies;
+	/*public GameObject enemyPrefab;
+	public int numOfEnemies;*/
 	public GameObject shooterBarrel;
 	public GameObject prefab;
 	public Sprite human;
+	public Sprite projSprite;
 	public int health;
+	public bool hasBeenHit;
+
 	GameObject projectile;
-	int randNum;
+	//int randNum;
 	Vector3 mousePos;
-	Sprite[] charSpriteArray = new Sprite[10];
+	List<Sprite> charSpriteArray = new List<Sprite>();
+	float barSize;
+	public float newBarSize;
 
 	// Use this for initialization
 	void Start () {
@@ -21,18 +27,21 @@ public class TestPlayerMovement : MonoBehaviour {
 		health = 100;
 
 		//Fill character sprite array with starter
-		charSpriteArray[0] = human;
+		charSpriteArray.Add(human);
 
 		//Set character sprite
 		transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().sprite = charSpriteArray[0];
 
-		for (int i = 1; i < numOfEnemies + 1; i++) {
+		/*for (int i = 1; i < numOfEnemies + 1; i++) {
 			//Get random coordinates
 			randNum = Random.Range(1,10);
 
 			//Instantiate enemy on start
 			Instantiate (enemyPrefab, new Vector3 (randNum, randNum, 0), Quaternion.identity);
-		}
+		}*/
+
+		barSize = transform.GetChild(2).localScale.x;
+		newBarSize = barSize;
 
 	}
 	
@@ -49,8 +58,10 @@ public class TestPlayerMovement : MonoBehaviour {
 		else if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
 			transform.position += Vector3.down * speed * Time.deltaTime;
 		//If mouse click then shoot 
-		if (Input.GetMouseButtonDown(0))
-			projectile = (GameObject)Instantiate(prefab, shooterBarrel.transform.position, Quaternion.identity);
+		if (Input.GetMouseButtonDown (0)) {
+			projectile = (GameObject)Instantiate (prefab, shooterBarrel.transform.position, Quaternion.identity);
+			projectile.GetComponent<BulletMovement>().spriteInfo = projSprite;
+		}
 
 		//After 1 second destory projectile
 		Destroy (projectile, 3.0f);
@@ -62,7 +73,7 @@ public class TestPlayerMovement : MonoBehaviour {
 
 	//Function that updates the health bar based on health
 	void updateHealthBar(){
-		float newBarSize = transform.GetChild(2).localScale.x * (health/100);
+		//Update size
 		transform.GetChild (2).localScale = new Vector3 (newBarSize, transform.GetChild (2).localScale.y, transform.GetChild (2).localScale.z);
 	}
 
@@ -89,10 +100,27 @@ public class TestPlayerMovement : MonoBehaviour {
 		}
 	}
 
+	//Collision check for collectables
 	void OnTriggerEnter(Collider col){
 		if (col.gameObject.tag == "Collectable") {
-			//Get Sprite info
-			transform.GetChild (0).gameObject.GetComponent<SpriteRenderer> ().sprite = col.GetComponent<CollectableScript> ().spriteInfo;
+			transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().sprite = col.GetComponent<CollectableScript> ().spriteInfo;
+			projSprite = col.GetComponent<CollectableScript> ().spriteInfoProj;
+			//USED IN LATER GAME
+			/*//Variable to check if sprite is already in list
+			bool alreadyIn = false;
+
+			//Check through list
+			foreach(Sprite sprites in charSpriteArray){
+				if(sprites == col.GetComponent<CollectableScript> ().spriteInfo){
+					alreadyIn = true;
+				}
+			}
+
+			//If it isnt already in the list then add
+			if(!alreadyIn){
+				charSpriteArray.Add(col.GetComponent<CollectableScript> ().spriteInfo);
+			}*/
+			
 
 			Destroy (col.gameObject);
 		}

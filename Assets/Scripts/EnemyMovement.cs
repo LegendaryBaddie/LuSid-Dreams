@@ -10,6 +10,10 @@ public class EnemyMovement : MonoBehaviour {
 	bool flipTime;
 	bool firstTime;
 
+	//For hit collision
+	bool hasBeenHit = false;
+	float timer = 3;
+
 	//For wander
 	float wanderRadius = 5.0f;
 	Vector3 destination = Vector3.zero;
@@ -131,20 +135,41 @@ public class EnemyMovement : MonoBehaviour {
 		//Attack
 		if(Mathf.Abs(enemyX - playerX) == 0){
 			attack(player);
-			print("Attack");
 		}
 		if(Mathf.Abs(enemyY - playerY) == 0){
 			attack(player);
-			print("Attack");
 		}
 	}
 
 	//Attack function that gives damage to player health
 	void attack(GameObject player){
-		//Push player back
-		player.transform.position = new Vector3(player.transform.position.x - 0.9f, player.transform.position.y, player.transform.position.z);
-		//Give damage
-		player.GetComponent<TestPlayerMovement> ().health -= 5;
+		//If the player hasn't been hit in 3 seconds
+		if (!hasBeenHit) {
+			//Push player back
+			player.transform.position = new Vector3 (player.transform.position.x - 0.9f, player.transform.position.y, player.transform.position.z);
+			//Give damage
+			player.GetComponent<TestPlayerMovement> ().health -= 10;
+			player.GetComponent<TestPlayerMovement> ().newBarSize += 0.05f;
+			hasBeenHit = true;
+		}
+
+		//Timer for hasBeenHit
+		if (countDown()==true) {
+			hasBeenHit = false;
+		}
+	}
+
+	bool countDown(){
+		timer -= Time.deltaTime;
+		
+		if (timer > 0) {
+			return false;
+		}
+		else {
+			timer = 3;
+			return true;
+		}
+		
 	}
 
 
